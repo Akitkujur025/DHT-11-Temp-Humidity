@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Style sheets -->
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" type="img/png" href="/water-temperature.png">
+    <title>Humidity&Temperature</title>
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="humid">
+            <h2>Humidity</h2>
+            <img src="/humidity.png" alt="" srcset="" width="15%" height="20%">
+            <p class="value" id="Humidity">-----</p>
+        </div>
+        <div class="temp">
+            <h2>Temperature</h2>
+            <img src="/temperature.png" alt="" srcset="" width="15%" height="20%">
+            <div class="tempc">
+                <p class="value" id="tempC">----</p>
+            </div>
+            <div class="tempf">
+                <p class="value" id="tempF">----</p>
+            </div>
+        </div>
+    </div>
+    <!--Scripts-->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyCi65CCuAKWl43UjfJGOT0TRi3crfu-ToA",
+          authDomain: "dht11-1-2be91.firebaseapp.com",
+          databaseURL: "https://dht11-1-2be91-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "dht11-1-2be91",
+          storageBucket: "dht11-1-2be91.appspot.com",
+          messagingSenderId: "416548588597",
+          appId: "1:416548588597:web:fd65e1439b78d0b5e0357c"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+
+        import {getDatabase, set, get, update, remove, ref, child, onValue} from "https://www.gstatic.com/firebasejs/10.3.1/firebase-database.js";
+        const db = getDatabase();
+        var humidity = document.getElementById("Humidity");
+        var Tempc = document.getElementById("tempC");
+        var Tempf = document.getElementById("tempF");
+
+        const dbref = ref(db)
+        // get(child(dbref, "Sensor")).then((snapshot)=>{
+        //     humidity.innerHTML = snapshot.val().Humidity;
+        // })
+        onValue(child(dbref, "Sensor"),(snapshot)=>(
+            humidity.innerHTML = snapshot.val().Humidity + "%"
+        ))
+        onValue(child(dbref, "Sensor/Temp"),(snapshot)=>(
+            Tempc.innerHTML = snapshot.val().C + "&deg;C"
+        ))
+        onValue(child(dbref, "Sensor/Temp"),(snapshot)=>(
+            Tempf.innerHTML = snapshot.val().F +"&deg;F"
+        ))
+    
+
+        
+
+    </script>
+    <script src="/Index.js"></script>
+
+
+</body>
+</html>
